@@ -1,0 +1,15 @@
+menukick(string name)
+{
+	key detected_key = llName2Key(name);
+	//llOwnerSay((string)detected_key);
+	if ( detected_key ==  llGetOwner() )
+	{
+		llOwnerSay("You CAN'T kick yourself");
+		return;
+	}
+	else
+	{
+		llDialog(detected_key, "--Warning--\nYou have been ejected from parcel.", ["Close"], -69);
+		llTeleportAgentHome(detected_key);
+	}
+}
