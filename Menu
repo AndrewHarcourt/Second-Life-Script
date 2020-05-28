@@ -1,3 +1,6 @@
+//Automatic Menu for LLDialog()
+//Andrew HArcourt
+//2020
 Menu()
 {
     integer Last;
