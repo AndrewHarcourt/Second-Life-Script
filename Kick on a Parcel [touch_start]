@@ -1,0 +1,24 @@
+//Script Touch Start for : 
+//Parcel Kicker
+//Andrew Harcourt's Scripts
+//2020
+
+default
+{
+    touch_start(integer total_number)
+    {
+        llSetScriptState("Kick on a Parcel",TRUE);        
+        llResetOtherScript("Kick on a Parcel");
+    }
+    link_message(integer aSender, integer aNumber, string aMessage, key aId )
+    {
+        if( aMessage == "Done" )
+        { 
+        llSetScriptState("Kick on a Parcel",FALSE);  
+        }                       
+    }  
+    on_rez(integer rez_param)
+    {
+        llResetScript();
+    }   
+}
